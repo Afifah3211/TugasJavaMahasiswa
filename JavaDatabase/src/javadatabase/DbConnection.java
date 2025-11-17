@@ -22,14 +22,14 @@ public class DbConnection {
     
     public static Connection connect(){
         try {
-            //1.  Buat koneksi ke DB
+           
             Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
-            //System.out.println("Berhasil");
+            
             
             return con;
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-            //Logger.getLogger(JavaDatabase.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         return null;
     }

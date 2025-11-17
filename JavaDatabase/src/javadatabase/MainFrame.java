@@ -9,19 +9,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.JFileChooser;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import javax.swing.JOptionPane;
 
-/**
- *
- * @author Ahmad Yusuf
- */
+
+
 public class MainFrame extends javax.swing.JFrame {
 
     DefaultTableModel modelMahasiswa;
     boolean isEdit;
 
-    /**
-     * Creates new form MainFrame
-     */
+    
     public MainFrame() {
         initComponents();
         // Tambahkan kolom baru
@@ -51,14 +51,15 @@ public class MainFrame extends javax.swing.JFrame {
         btnHapus = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         lblNim1 = new javax.swing.JLabel();
-        txtNim1 = new javax.swing.JTextField();
-        lblNim2 = new javax.swing.JLabel();
-        txtNim2 = new javax.swing.JTextField();
+        txtNim = new javax.swing.JTextField();
+        lblTahunMasuk = new javax.swing.JLabel();
+        txtTahunMasuk = new javax.swing.JTextField();
+        UploadCsv = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 204, 204));
 
-        btnSubmit.setText("Submit");
+        btnSubmit.setText("Tambah");
         btnSubmit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSubmitActionPerformed(evt);
@@ -97,11 +98,18 @@ public class MainFrame extends javax.swing.JFrame {
 
         lblNim1.setText("NIM");
 
-        lblNim2.setText("Tahun Masuk");
+        lblTahunMasuk.setText("Tahun Masuk");
 
-        txtNim2.addActionListener(new java.awt.event.ActionListener() {
+        txtTahunMasuk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNim2ActionPerformed(evt);
+                txtTahunMasukActionPerformed(evt);
+            }
+        });
+
+        UploadCsv.setText("Upload CSV");
+        UploadCsv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UploadCsvActionPerformed(evt);
             }
         });
 
@@ -110,28 +118,36 @@ public class MainFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(71, 71, 71)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(lblNama, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
+                        .addGap(71, 71, 71)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(lblNim2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblNim1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(28, 28, 28)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(txtNim1, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtNim2, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(113, 276, Short.MAX_VALUE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(lblNama, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(lblTahunMasuk, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblNim1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(28, 28, 28)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(txtNim, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtTahunMasuk, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(UploadCsv)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnSubmit)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(37, 37, 37))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(59, 59, 59)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(205, 288, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,36 +159,33 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNim1)
-                    .addComponent(txtNim1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNim2)
-                    .addComponent(txtNim2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnSubmit)
-                            .addComponent(btnEdit)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnHapus)))
-                .addGap(18, 18, 18)
+                    .addComponent(lblTahunMasuk)
+                    .addComponent(txtTahunMasuk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSubmit)
+                    .addComponent(btnEdit)
+                    .addComponent(btnHapus)
+                    .addComponent(UploadCsv))
+                .addGap(20, 20, 20)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(131, Short.MAX_VALUE))
+                .addContainerGap(137, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
-        insert(); // simpan ke database
+        insert(); 
 
         txtNama.setText("");
-        txtNim1.setText("");
-        txtNim2.setText("");
+        txtNim.setText("");
+        txtTahunMasuk.setText("");
 
-        loadData(); // refresh tabel dari DB
+        loadData(); 
 
     }//GEN-LAST:event_btnSubmitActionPerformed
 
@@ -180,9 +193,9 @@ public class MainFrame extends javax.swing.JFrame {
 
         int row = tblMahasiswa.getSelectedRow();
         if (row == -1) {
-            return; // kalau belum pilih baris
+            return; 
         }
-        int id = (int) tblMahasiswa.getValueAt(row, 0); // kolom pertama = ID
+        int id = (int) tblMahasiswa.getValueAt(row, 0); 
 
         try {
             Connection conn = DbConnection.connect();
@@ -192,7 +205,7 @@ public class MainFrame extends javax.swing.JFrame {
             ps.executeUpdate();
             conn.close();
 
-            loadData(); // refresh tabel
+            loadData(); 
             System.out.println("Data berhasil dihapus!");
 
         } catch (Exception e) {
@@ -203,41 +216,96 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+                                     
+   int row = tblMahasiswa.getSelectedRow();
+    if (row == -1) {
+        JOptionPane.showMessageDialog(this, "Pilih baris yang ingin diedit!");
+        return;
+    }
 
-        int row = tblMahasiswa.getSelectedRow();
-        if (row == -1) {
-            return;
-        }
+    // --- PASTIKAN MAPPING KOLM BENAR ---
+    // modelMahasiswa: 0=id, 1=nim, 2=nama, 3=tahunmasuk
 
+    // Jika textfield kosong -> isi dulu dari tabel (fase edit)
+    if (txtNama.getText().trim().isEmpty() && txtNim.getText().trim().isEmpty() && txtTahunMasuk.getText().trim().isEmpty()) {
+
+        // Ambil dari kolom yang sesuai
+        Object nimObj = tblMahasiswa.getValueAt(row, 1);
+        Object namaObj = tblMahasiswa.getValueAt(row, 2);
+        Object tahunObj = tblMahasiswa.getValueAt(row, 3);
+
+        txtNim.setText(nimObj == null ? "" : nimObj.toString());
+        txtNama.setText(namaObj == null ? "" : namaObj.toString());
+        txtTahunMasuk.setText(tahunObj == null ? "" : tahunObj.toString());
+
+        JOptionPane.showMessageDialog(this, "Silakan ubah data di textfield, lalu klik Edit lagi untuk menyimpan.");
+        return;
+    }
+
+    // Jika field sudah terisi -> simpan perubahan (fase simpan)
+    String nim = txtNim.getText().trim();
+    String nama = txtNama.getText().trim();
+    String tahunText = txtTahunMasuk.getText().trim();
+
+    if (nim.isEmpty() || nama.isEmpty() || tahunText.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Semua field harus diisi sebelum menyimpan.");
+        return;
+    }
+
+    int tahun;
+    try {
+        tahun = Integer.parseInt(tahunText);
+    } catch (NumberFormatException nfe) {
+        JOptionPane.showMessageDialog(this, "Tahun masuk harus berupa angka.");
+        return;
+    }
+
+    try {
         int id = (int) tblMahasiswa.getValueAt(row, 0);
-        String nama = txtNama.getText();
-        String nim = txtNim1.getText();
-        int tahun = Integer.parseInt(txtNim2.getText());
 
-        try {
-            Connection conn = DbConnection.connect();
-            String sql = "UPDATE mahasiswa SET nama = ?, nim = ?, tahunmasuk = ? WHERE id = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, nama);
-            ps.setString(2, nim);
-            ps.setInt(3, tahun);
-            ps.setInt(4, id);
-            ps.executeUpdate();
-            conn.close();
+        Connection conn = DbConnection.connect();
+        String sql = "UPDATE mahasiswa SET nim = ?, nama = ?, tahunmasuk = ? WHERE id = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
 
-            loadData();
-            System.out.println("Data berhasil diperbarui!");
+        ps.setString(1, nim);
+        ps.setString(2, nama);
+        ps.setInt(3, tahun);
+        ps.setInt(4, id);
 
-        } catch (Exception e) {
-            System.out.println("Edit error: " + e.getMessage());
-        }
+        ps.executeUpdate();
+        ps.close();
+        conn.close();
 
+        // refresh tabel dari DB
+        loadData();
 
+        JOptionPane.showMessageDialog(this, "Data berhasil diperbarui!");
+
+        // Bersihkan textfield setelah update
+        txtNama.setText("");
+        txtNim.setText("");
+        txtTahunMasuk.setText("");
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Edit error: " + e.getMessage());
+    }
     }//GEN-LAST:event_btnEditActionPerformed
 
-    private void txtNim2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNim2ActionPerformed
+    private void txtTahunMasukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTahunMasukActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtNim2ActionPerformed
+    }//GEN-LAST:event_txtTahunMasukActionPerformed
+
+    private void UploadCsvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UploadCsvActionPerformed
+                                                 
+    javax.swing.JFileChooser fc = new javax.swing.JFileChooser();
+    int result = fc.showOpenDialog(this);
+
+    if (result == javax.swing.JFileChooser.APPROVE_OPTION) {
+        String file = fc.getSelectedFile().getAbsolutePath();
+        importCsv(file);
+    }
+
+    }//GEN-LAST:event_UploadCsvActionPerformed
 
     private void insert() {
     try {
@@ -251,9 +319,9 @@ public class MainFrame extends javax.swing.JFrame {
         String sql = "INSERT INTO mahasiswa (nim, nama, tahunmasuk) VALUES (?, ?, ?)";
         PreparedStatement ps = conn.prepareStatement(sql);
 
-        ps.setString(1, txtNim1.getText());
+        ps.setString(1, txtNim.getText());
         ps.setString(2, txtNama.getText());
-        ps.setInt(3, Integer.parseInt(txtNim2.getText()));
+        ps.setInt(3, Integer.parseInt(txtTahunMasuk.getText()));
 
         ps.executeUpdate();
         conn.close();
@@ -267,28 +335,95 @@ public class MainFrame extends javax.swing.JFrame {
 
     }
 
-    private void loadData() {
-        //select * from mahasiswa
-        try {
-            Connection conn = DbConnection.connect();
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM mahasiswa");
+    private void importCsv(String filePath) {
+    try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 
-            modelMahasiswa.setRowCount(0);
-            while (rs.next()) {
-                Object[] row = {
-                    rs.getInt("id"),
-                    rs.getString("nim"),
-                    rs.getString("nama"),
-                    rs.getInt("tahunmasuk")
-                };
-                modelMahasiswa.addRow(row);
+        String line;
+        boolean skipHeader = true;
+
+        Connection conn = DbConnection.connect();
+        String sql = "INSERT INTO mahasiswa (nim, nama, tahunmasuk) VALUES (?, ?, ?)";
+        PreparedStatement ps = conn.prepareStatement(sql);
+
+        while ((line = br.readLine()) != null) {
+            if (skipHeader) { 
+                skipHeader = false; 
+                continue; 
             }
-            conn.close();
-        } catch (Exception e) {
-            System.out.println("Load data error: " + e.getMessage());
+
+            String[] data = line.split(",");
+
+            if (data.length < 3) continue; // validasi
+
+            String nim = data[0].trim();
+            String nama = data[1].trim();
+            int tahun = Integer.parseInt(data[2].trim());
+
+            // INSERT ke database
+            ps.setString(1, nim);
+            ps.setString(2, nama);
+            ps.setInt(3, tahun);
+            ps.executeUpdate();
         }
+
+        conn.close();
+        loadData(); // Refresh JTable
+
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Berhasil mengimpor data dari CSV!");
+
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Error membaca CSV: " + e.getMessage());
     }
+}
+
+
+ 
+    
+   private void loadData() {
+
+    try {
+        Connection conn = DbConnection.connect();
+        Statement st = conn.createStatement();
+
+        // --- CEK APAKAH TABEL KOSONG ---
+        ResultSet rsCount = st.executeQuery("SELECT COUNT(*) FROM mahasiswa");
+        rsCount.next();
+        int count = rsCount.getInt(1);
+
+        if (count == 0) {
+            // Dapatkan nama SEQUENCE untuk kolom ID
+            ResultSet rsSeq = st.executeQuery(
+                "SELECT pg_get_serial_sequence('mahasiswa', 'id')"
+            );
+            rsSeq.next();
+            String seqName = rsSeq.getString(1);
+
+            // Reset sequence agar ID mulai dari 1
+            st.executeUpdate("ALTER SEQUENCE " + seqName + " RESTART WITH 1");
+        }
+
+        // --- LOAD DATA TABEL ---
+        ResultSet rs = st.executeQuery("SELECT * FROM mahasiswa ORDER BY id ASC");
+
+        modelMahasiswa.setRowCount(0);
+        while (rs.next()) {
+            Object[] row = {
+                rs.getInt("id"),
+                rs.getString("nim"),
+                rs.getString("nama"),
+                rs.getInt("tahunmasuk")
+            };
+            modelMahasiswa.addRow(row);
+        }
+
+        conn.close();
+    } catch (Exception e) {
+        System.out.println("Load data error: " + e.getMessage());
+    }
+}
+
 
     /**
      * @param args the command line arguments
@@ -326,17 +461,18 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton UploadCsv;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnSubmit;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblNama;
     private javax.swing.JLabel lblNim1;
-    private javax.swing.JLabel lblNim2;
+    private javax.swing.JLabel lblTahunMasuk;
     private javax.swing.JTable tblMahasiswa;
     private javax.swing.JTextField txtNama;
-    private javax.swing.JTextField txtNim1;
-    private javax.swing.JTextField txtNim2;
+    private javax.swing.JTextField txtNim;
+    private javax.swing.JTextField txtTahunMasuk;
     // End of variables declaration//GEN-END:variables
 
 }
